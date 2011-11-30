@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Code Generator
+Bundle-SymbolicName: com.morcinek.android.codegenerator.plugin;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: com.morcinek.android.codegenerator.plugin.Activator
+Bundle-Vendor: MORCINEK
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-LazyStart: true
+Import-Package: 
+ org.eclipse.core.internal.resources,
+ org.eclipse.core.resources
+Export-Package: com.morcinek.android.codegenerator.plugin,
+ com.morcinek.android.codegenerator.logic,
+ com.morcinek.android.codegenerator.serialization
