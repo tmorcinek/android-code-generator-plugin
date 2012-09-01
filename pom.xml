@@ -5,6 +5,12 @@
 	<artifactId>code-generator</artifactId>
 	<version>1.0</version>
 	<name>Android Code Generator</name>
+	
+	<properties>
+	    <java-version>1.6</java-version>
+		<tycho-version>0.15.0</tycho-version>
+	</properties>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<outputDirectory>bin</outputDirectory>
@@ -13,10 +19,16 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+	            <groupId>org.eclipse.tycho</groupId>
+	            <artifactId>tycho-maven-plugin</artifactId>
+	            <version>${tycho-version}</version>
+	            <extensions>true</extensions>
+	         </plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -25,5 +37,36 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jface</groupId>
+			<artifactId>text</artifactId>
+			<version>3.3.0-v20070606-0010</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.ui</groupId>
+			<artifactId>workbench</artifactId>
+			<version>3.3.0-I20070608-1100</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.resources</artifactId>
+			<version>3.6.0.v20100526-0737</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.swt.win32.win32</groupId>
+			<artifactId>x86</artifactId>
+			<version>3.3.0-v3346</version>
+		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>eclipse-indigo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/indigo</url>
+		</repository>
+		<repository>
+			<id>maven2</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+	</repositories>
 </project>
