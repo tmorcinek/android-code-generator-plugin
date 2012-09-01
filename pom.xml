@@ -2,8 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.morcinek.android</groupId>
-	<artifactId>code-generator</artifactId>
-	<version>1.0</version>
+	<artifactId>com.morcinek.android.codegenerator.plugin</artifactId>
+	<version>1.0.0</version>
+	<packaging>eclipse-plugin</packaging>
 	<name>Android Code Generator</name>
 	
 	<properties>
@@ -12,8 +13,6 @@
 	</properties>
 	
 	<build>
-		<sourceDirectory>src</sourceDirectory>
-		<outputDirectory>bin</outputDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -29,6 +28,40 @@
 	            <version>${tycho-version}</version>
 	            <extensions>true</extensions>
 	         </plugin>
+	         <plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -57,12 +90,17 @@
 			<artifactId>x86</artifactId>
 			<version>3.3.0-v3346</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.runtime</artifactId>
+			<version>3.6.0.v20100505</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
-			<id>eclipse-indigo</id>
+			<id>helios</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/indigo</url>
+			<url>http://download.eclipse.org/releases/helios</url>
 		</repository>
 		<repository>
 			<id>maven2</id>

@@ -21,6 +21,7 @@ public class Convert extends AbstractHandler {
 
 	private InputStream contents;
 
+	@SuppressWarnings({ "unchecked", "restriction" })
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
 		EvaluationContext evaluationContext = (EvaluationContext) arg0.getApplicationContext();
 		List<Object> objects = (List<Object>) evaluationContext.getDefaultVariable();
