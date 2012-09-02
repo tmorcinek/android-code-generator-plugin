@@ -17,11 +17,12 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.morcinek.android.codegenerator.logic.LayoutParser;
 
+@SuppressWarnings("restriction")
 public class Convert extends AbstractHandler {
 
 	private InputStream contents;
 
-	@SuppressWarnings({ "unchecked", "restriction" })
+	@SuppressWarnings({ "unchecked" })
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
 		EvaluationContext evaluationContext = (EvaluationContext) arg0.getApplicationContext();
 		List<Object> objects = (List<Object>) evaluationContext.getDefaultVariable();
