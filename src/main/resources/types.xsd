@@ -39,7 +39,7 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="name" use="required" />
-		<xs:attribute name="package" use="required" />
+		<xs:attribute name="package" use="optional" />
 	</xs:complexType>
 
 	<xs:element name="types">

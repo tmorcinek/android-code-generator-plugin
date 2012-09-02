@@ -19,23 +19,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.morcinek.android.codegenerator.logic.resources.ActivityResource;
+import com.morcinek.android.codegenerator.logic.resources.WidgetResource;
 
-public class LayoutParser {
 
-	private String filePath;
+public class XmlLayoutParser {
 
-	private String layoutName;
+	private final String packageName;
 
-	private InputStream inputStream;
+	private final boolean pShortMode;
 
-	public LayoutParser(String pFilePath) {
-		filePath = pFilePath;
-		layoutName = getFileNameFromPath(filePath);
-	}
-
-	public LayoutParser(String pFilePath, InputStream pInputStream) {
-		this(pFilePath);
-		inputStream = pInputStream;
+	public XmlLayoutParser(boolean pShortMode, String packageName) {
+		this.pShortMode = pShortMode;
+		this.packageName = packageName;
 	}
 
 	/**
@@ -54,21 +50,20 @@ public class LayoutParser {
 	 * @throws ParserConfigurationException
 	 * @throws XPathExpressionException
 	 */
-	public InputStream generateCode(boolean pShortMode, String packageName) throws XPathExpressionException,
+	public InputStream generateCode(String filePath, InputStream inputStream) throws XPathExpressionException,
 			ParserConfigurationException, SAXException, IOException {
-		if (inputStream == null) {
-			inputStream = getClass().getResourceAsStream(filePath);
-		}
+		String layoutName = getFileNameFromPath(filePath);
+
 		NodeList nodeList = getNodesWithId(inputStream);
 		ActivityObject activityObject = new ActivityObject(pShortMode);
-		activityObject.setActivityResource(new ActivityResource(getLayoutName()));
+		activityObject.setActivityResource(new ActivityResource(layoutName));
 		activityObject.setPackageName(packageName);
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 			String id = node.getAttributes().getNamedItem("android:id").getNodeValue();
 			String typeName = node.getNodeName();
-			WidgetResource name = new WidgetResource(id);
-			activityObject.addWidget(name, typeName);
+			WidgetResource widget = new WidgetResource(id);
+			activityObject.addWidget(widget, typeName);
 		}
 		return new ByteArrayInputStream(activityObject.generate().getBytes());
 	}
@@ -85,14 +80,10 @@ public class LayoutParser {
 		return (NodeList) expression.evaluate(doc, XPathConstants.NODESET);
 	}
 
-	public String getFileName() {
-		return "/" + new ActivityResource(layoutName).getVariableName() + ".java";
+	public String getFileName(String filePath) {
+		return "/" + new ActivityResource(getFileNameFromPath(filePath)).getVariableName() + ".java";
 	}
-
-	public String getLayoutName() {
-		return layoutName;
-	}
-
+	
 	public static String getFileNameFromPath(String filePath) {
 		// Pattern pattern = Pattern.compile("[^\\/]+.xml$");
 		// Matcher matcher = pattern.matcher(filePath);
@@ -117,7 +108,7 @@ public class LayoutParser {
 		return stringBuilder.toString() + "Activity";
 	}
 
-	public static String getIdNameFromId(String pId) {
+	private static String getIdNameFromId(String pId) {
 		if (pId.startsWith("@+id/")) {
 			return pId.substring(5);
 		}

@@ -1,4 +1,4 @@
-package com.morcinek.android.codegenerator.logic;
+package com.morcinek.android.codegenerator.logic.resources;
 
 public class ActivityResource extends WidgetResource {
 

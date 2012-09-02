@@ -32,7 +32,8 @@ public class Activator extends AbstractUIPlugin {
 		IPreferenceStore store = getPreferenceStore();
 		store.setDefault(PreferencePage.P_DIRECTORY, "src/");
 		store.setDefault(PreferencePage.P_PACKAGE, "com.mobica.activities");
-		store.setDefault(PreferencePage.P_SHORT_MODE, "false");
+		store.setDefault(PreferencePage.P_SHORT_MODE, false);
+		store.setDefault(PreferencePage.P_AUTO_TYPE_RECOGNITION, false);
 		plugin = this;
 	}
 

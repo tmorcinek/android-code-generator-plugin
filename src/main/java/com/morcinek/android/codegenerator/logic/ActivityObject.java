@@ -11,6 +11,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import com.morcinek.android.codegenerator.logic.resources.ActivityResource;
+import com.morcinek.android.codegenerator.logic.resources.WidgetResource;
 import com.morcinek.android.codegenerator.serialization.Method;
 import com.morcinek.android.codegenerator.serialization.Type;
 import com.morcinek.android.codegenerator.serialization.Types;

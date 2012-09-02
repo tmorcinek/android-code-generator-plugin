@@ -15,41 +15,36 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Shell;
 
-import com.morcinek.android.codegenerator.logic.LayoutParser;
+import com.morcinek.android.codegenerator.logic.XmlLayoutParser;
 
 @SuppressWarnings("restriction")
 public class Convert extends AbstractHandler {
 
-	private InputStream contents;
-
 	@SuppressWarnings({ "unchecked" })
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		String directoryName = preferenceStore.getString(PreferencePage.P_DIRECTORY);
+		String packageName = preferenceStore.getString(PreferencePage.P_PACKAGE);
+		boolean shortMode = preferenceStore.getBoolean(PreferencePage.P_SHORT_MODE);
+		XmlLayoutParser layoutParser = new XmlLayoutParser(shortMode, packageName);
+
 		EvaluationContext evaluationContext = (EvaluationContext) arg0.getApplicationContext();
 		List<Object> objects = (List<Object>) evaluationContext.getDefaultVariable();
-		if (!objects.isEmpty() && objects.get(0) instanceof File) {
-			File file = (File) objects.get(0);
-			if (file.getName().endsWith(".xml")) {
-				IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-				String directoryName = preferenceStore.getString(PreferencePage.P_DIRECTORY);
-				String packageName = preferenceStore.getString(PreferencePage.P_PACKAGE);
-				boolean shortMode = Boolean.parseBoolean(preferenceStore.getString(PreferencePage.P_SHORT_MODE));
-				try {
-					contents = file.getContents();
-					LayoutParser layoutParser = new LayoutParser(file.getName(), contents);
-					IFile iFile = file.getProject().getFile(directoryName + packageName.replace(".", "/")+ layoutParser.getFileName());
-					iFile.create(layoutParser.generateCode(shortMode, packageName), false, null);
-				} catch (ResourceException e) {
-					showErrorMessage(e);
-				} catch (CoreException e) {
-					showErrorMessage(e);
-				} catch (Exception e) {
-					showErrorMessage(e);
-				}
-			} else {
-				showErrorMessage("This resource is not xml File.");
+		for (Object object : objects) {
+			File file = (File) object;
+			try {
+				InputStream contents = file.getContents();
+				IFile iFile = file.getProject().getFile(
+						directoryName + packageName.replace(".", "/") + layoutParser.getFileName(file.getName()));
+				InputStream generatedCode = layoutParser.generateCode(file.getName(), contents);
+				iFile.create(generatedCode, false, null);
+			} catch (ResourceException e) {
+				showErrorMessage(e);
+			} catch (CoreException e) {
+				showErrorMessage(e);
+			} catch (Exception e) {
+				showErrorMessage(e);
 			}
-		} else {
-			showErrorMessage("This resource is not File type.");
 		}
 		return null;
 	}

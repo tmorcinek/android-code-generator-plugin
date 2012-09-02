@@ -1,7 +1,7 @@
 package com.morcinek.android.codegenerator.plugin;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -15,6 +15,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	public static final String P_DIRECTORY = "directoryPreference";
 	public static final String P_PACKAGE = "packagePreference";
 	public static final String P_SHORT_MODE = "shortModePreference";
+	public static final String P_AUTO_TYPE_RECOGNITION = "autoTypeRecognition";
 
 	public PreferencePage() {
 		super(GRID);
@@ -49,8 +50,8 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 
 		addField(new StringFieldEditor(P_DIRECTORY, "&Directory:", getFieldEditorParent()));
 		addField(new StringFieldEditor(P_PACKAGE, "&Package:", getFieldEditorParent()));
-		addField(new StringFieldEditor(P_SHORT_MODE, "&Short Mode:", getFieldEditorParent()));
-
+		addField(new BooleanFieldEditor(P_SHORT_MODE, "&Short Mode:", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(P_AUTO_TYPE_RECOGNITION, "&Allow automatic type recognition:", getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench arg0) {
