@@ -13,6 +13,8 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.Status;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -21,7 +23,7 @@ import org.xml.sax.SAXException;
 import com.morcinek.android.codegenerator.logic.util.ActivityResource;
 import com.morcinek.android.codegenerator.logic.util.StringUtils;
 import com.morcinek.android.codegenerator.logic.util.WidgetResource;
-
+import com.morcinek.android.codegenerator.plugin.Activator;
 
 public class XmlLayoutParser {
 
@@ -31,10 +33,20 @@ public class XmlLayoutParser {
 
 	private TypesAdapter typesAdapter;
 
+	private ILog log;
+
 	public XmlLayoutParser(boolean pShortMode, String packageName, TypesAdapter typesAdapter) {
 		this.pShortMode = pShortMode;
 		this.packageName = packageName;
 		this.typesAdapter = typesAdapter;
+	}
+
+	public ILog getLog() {
+		return log;
+	}
+
+	public void setLog(ILog log) {
+		this.log = log;
 	}
 
 	/**
@@ -67,7 +79,12 @@ public class XmlLayoutParser {
 			String id = node.getAttributes().getNamedItem("android:id").getNodeValue();
 			String typeName = node.getNodeName();
 			WidgetResource widget = new WidgetResource(id);
-			activityObject.addWidget(widget, typeName);
+			try {
+				activityObject.addWidget(widget, typeName);
+				log.log(new Status(Status.INFO, Activator.PLUGIN_ID, "Type: " + typeName + " added."));
+			} catch (IllegalArgumentException e) {
+				log.log(new Status(Status.ERROR, Activator.PLUGIN_ID, "Type: " + typeName + " was not recognized."));
+			}
 		}
 		return new ByteArrayInputStream(activityObject.generate().getBytes());
 	}

@@ -238,8 +238,10 @@ public class ActivityObject implements ActivityGeneratorInterface {
 	
 	public String generate() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(getPackage());
-		stringBuilder.append("\n");
+		if (packageName != null && !packageName.isEmpty()) {
+			stringBuilder.append(getPackage());
+			stringBuilder.append("\n");
+		}
 		stringBuilder.append(getImports());
 		stringBuilder.append("\n");
 		stringBuilder.append(getHeader());

@@ -12,6 +12,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.io.IOUtils;
+import org.easymock.EasyMock;
+import org.eclipse.core.runtime.ILog;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -39,6 +41,8 @@ public class XmlLayoutParserTest {
 		TypesAdapter typesAdapter = new TypesAdapter(types);
 		typesAdapter.setAutoTypeRecognition(true);
 		layoutParser = new XmlLayoutParser(false, "com.morcinek.activities", typesAdapter);
+		ILog log = EasyMock.createMock(ILog.class);
+		layoutParser.setLog(log);
 	}
 
 	@Test

@@ -7,18 +7,17 @@
                style="push">
                <visibleWhen
                   checkEnabled="false">
-                  	<and>
-			        	<count value="1"/>
-			        	<with
-		                     variable="activeMenuSelection">
-		                  <iterate>
-		                     <adapt type="org.eclipse.core.resources.IFile">
-	                            <test property="org.eclipse.core.resources.name"
-                     				value="*.xml"/>
-		                     </adapt>
-		                  </iterate>
-		               </with>
-			        </and>
+		        	<with
+	                     variable="activeMenuSelection">
+	                  <iterate
+	                  	ifEmpty="true"
+                      	operator="and">
+	                     <adapt type="org.eclipse.core.resources.IFile">
+                            <test property="org.eclipse.core.resources.name"
+                 				value="*.xml"/>
+	                     </adapt>
+	                  </iterate>
+	               </with>
 			   </visibleWhen>
          </command>
       </menuContribution>
