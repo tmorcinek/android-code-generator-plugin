@@ -1,7 +1,5 @@
 package com.morcinek.android.codegenerator.logic;
 
-import java.util.List;
-
 public interface ActivityGeneratorInterface {
 
 	public String generate();

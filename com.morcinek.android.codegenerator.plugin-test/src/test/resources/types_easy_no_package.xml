@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<types xmlns="http://www.example.org/types" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/types types.xsd ">
+	<type name="Activity" package="android.app" />
+	<type name="Bundle" package="android.os" />
+	<type name="View" package="android.view" />
+	<type name="EditText" package="android.widget" />
+	<type name="ListView" package="android.widget" />
+	<type name="morcinek.widget.Button" />
+	<type name="RelativeLayout" package="android.widget" />
+	<type name="LinearLayout" package="android.widget" />
+	<type name="TextView" package="android.widget" />
+	<type name="ImageView" package="android.widget" />
+</types>

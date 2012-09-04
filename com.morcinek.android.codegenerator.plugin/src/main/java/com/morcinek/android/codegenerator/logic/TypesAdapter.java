@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import com.morcinek.android.codegenerator.serialization.Method;
 import com.morcinek.android.codegenerator.serialization.Type;
@@ -13,8 +12,6 @@ import com.morcinek.android.codegenerator.serialization.Type.Require.Listener;
 import com.morcinek.android.codegenerator.serialization.Types;
 
 public class TypesAdapter {
-
-	private static final String PACKAGE_CLASS_REGEX = "([a-zA-Z]+.)+[a-zA-Z]+";
 
 	private Map<String, Type> typesMap = new HashMap<String, Type>();
 
@@ -63,15 +60,14 @@ public class TypesAdapter {
 
 	public Type getType(String typeName) {
 		Type type = typesMap.get(getShortName(typeName));
-		if (type == null && autoTypeRecognition) {
+		if ((type == null || getPackageName(typeName) != null) && autoTypeRecognition) {
 			type = new Type();
-			if(getPackageName(typeName) != null){
+			if (getPackageName(typeName) != null) {
 				convertType(type, typeName);
 			} else {
 				type.setName(typeName);
 				type.setPackage("android.widget");
 			}
-			addType(type);
 		}
 		return type;
 	}

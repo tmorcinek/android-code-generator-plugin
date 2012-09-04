@@ -23,15 +23,14 @@ public class TypesAdapterTest {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Types.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			types = (Types) unmarshaller.unmarshal(TypesAdapterTest.class
-					.getResourceAsStream("/types_easy.xml"));
+			types = (Types) unmarshaller.unmarshal(TypesAdapterTest.class.getResourceAsStream("/types_easy.xml"));
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		typesAdapter = new TypesAdapter(types);
 		typesAdapter.setAutoTypeRecognition(true);
 	}
@@ -58,14 +57,39 @@ public class TypesAdapterTest {
 	public void test4() {
 		Type type = typesAdapter.getType("com.morcinek.android.widget.v4.AceButton");
 		assertEquals("com.morcinek.android.widget.v4", type.getPackage());
-		type = typesAdapter.getType("AceButton");
-		assertEquals("com.morcinek.android.widget.v4", type.getPackage());
 	}
-	
+
 	@Test
 	public void test5() {
 		Type type = typesAdapter.getType("aceButton");
 		assertEquals("android.widget", type.getPackage());
+	}
+
+	@Test
+	public void testComplicated() {
+		Type type = typesAdapter.getType("com.morcinek.widget.Button");
+		assertEquals("com.morcinek.widget", type.getPackage());
+		type = typesAdapter.getType("Button");
+		assertEquals("android.widget", type.getPackage());
+	}
+
+	@Test
+	public void testParsing() {
+		Types types = null;
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(Types.class);
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+			types = (Types) unmarshaller.unmarshal(TypesAdapterTest.class
+					.getResourceAsStream("/types_easy_no_package.xml"));
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		TypesAdapter typesAdapter = new TypesAdapter(types);
+		typesAdapter.setAutoTypeRecognition(true);
+		Type type = typesAdapter.getType("Button");
+		assertEquals("morcinek.widget", type.getPackage());
+		type = typesAdapter.getType("com.morcinek.widget.Button");
+		assertEquals("com.morcinek.widget", type.getPackage());
 	}
 
 }
