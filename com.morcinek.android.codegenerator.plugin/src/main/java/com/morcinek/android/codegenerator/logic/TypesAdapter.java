@@ -19,15 +19,15 @@ public class TypesAdapter {
 
 	public TypesAdapter(Types types) {
 		super();
-		for(Type type : types.getType()){
+		for (Type type : types.getType()) {
 			String typeFullName = type.getName();
 			convertType(type, typeFullName);
 			addType(type);
 		}
 	}
-	
-	private Type addType(Type type){
-		return typesMap.put(type.getName(),type);
+
+	private Type addType(Type type) {
+		return typesMap.put(type.getName(), type);
 	}
 
 	protected void convertType(Type type, String typeFullName) {
@@ -35,22 +35,22 @@ public class TypesAdapter {
 		if (lastDot != -1) {
 			type.setName(typeFullName.substring(lastDot + 1));
 			type.setPackage(typeFullName.substring(0, lastDot));
-		} 
+		}
 	}
-	
-	protected String getShortName(String typeName){
+
+	protected String getShortName(String typeName) {
 		int lastDot = typeName.lastIndexOf(".");
 		if (lastDot != -1) {
 			return typeName.substring(lastDot + 1);
-		} 
+		}
 		return typeName;
 	}
-	
+
 	protected String getPackageName(String typeName) {
 		int lastDot = typeName.lastIndexOf(".");
 		if (lastDot != -1) {
 			return typeName.substring(0, lastDot);
-		} 
+		}
 		return null;
 	}
 
@@ -72,16 +72,16 @@ public class TypesAdapter {
 		return type;
 	}
 
-	public String getTypeFullName(String typeName) {
-		Type type = getType(typeName);
-		if (type != null) {
-			return type.getPackage() + "." + typeName;
+	public static String getTypeFullName(Type type) {
+		String typeName = new String();
+		if (type.getPackage() != null) {
+			typeName += type.getPackage() + ".";
+
 		}
-		return null;
+		return typeName + type.getName();
 	}
 
-	public List<Method> getTypeMethods(String typeName) {
-		Type type = getType(typeName);
+	public List<Method> getTypeMethods(Type type) {
 		if (type != null && type.getImplements() != null) {
 			return type.getImplements().getMethod();
 		}

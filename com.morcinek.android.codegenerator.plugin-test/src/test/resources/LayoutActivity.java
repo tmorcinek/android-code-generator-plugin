@@ -1,8 +1,8 @@
 package com.morcinek.activities;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.app.Activity;
+import android.widget.Button;
 import android.view.View.OnClickListener;
 
 public class LayoutActivity extends Activity implements OnClickListener{

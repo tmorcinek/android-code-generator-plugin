@@ -2,7 +2,7 @@ package com.morcinek.activities;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.v4.view.android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager;
 
 public class SpecificActivity extends Activity {
 

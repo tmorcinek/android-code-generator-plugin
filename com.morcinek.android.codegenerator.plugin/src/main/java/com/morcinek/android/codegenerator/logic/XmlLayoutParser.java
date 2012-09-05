@@ -70,8 +70,7 @@ public class XmlLayoutParser {
 		String layoutName = StringUtils.getFileNameFromPath(filePath);
 
 		NodeList nodeList = getNodesWithId(inputStream);
-		ActivityObject activityObject = new ActivityObject(pShortMode);
-		activityObject.setTypesAdapter(typesAdapter);
+		ActivityObject activityObject = new ActivityObject(pShortMode,typesAdapter);
 		activityObject.setActivityResource(new ActivityResource(layoutName));
 		activityObject.setPackageName(packageName);
 		for (int i = 0; i < nodeList.getLength(); i++) {

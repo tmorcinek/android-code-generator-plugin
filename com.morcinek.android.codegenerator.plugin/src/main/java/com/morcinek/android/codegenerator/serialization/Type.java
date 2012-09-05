@@ -361,4 +361,18 @@ public class Type {
 
     }
 
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((_package == null) ? 0 : _package.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return hashCode() == obj.hashCode();
+	}
 }

@@ -25,25 +25,22 @@ public class ActivityObject implements ActivityGeneratorInterface {
 
 	private ActivityResource activityResource;
 
-	private Set<String> imports = new HashSet<String>();
+	private Set<Type> imports = new HashSet<Type>();
 
-	private Set<String> interfaces = new HashSet<String>();
+	private Set<Type> interfaces = new HashSet<Type>();
 
 	private Map<WidgetResource, Type> widgetsTypes = new HashMap<WidgetResource, Type>();
 
-	public ActivityObject(Boolean pShortMode) {
+	public ActivityObject(Boolean pShortMode, TypesAdapter pTypesAdapter) {
 		shortMode = pShortMode;
-		imports.add("Activity");
-		imports.add("Bundle");
-	}
-
-	public void setTypesAdapter(TypesAdapter typesAdapter) {
-		this.typesAdapter = typesAdapter;
+		typesAdapter = pTypesAdapter;
+		imports.add(typesAdapter.getType("Activity"));
+		imports.add(typesAdapter.getType("Bundle"));
 	}
 
 	public String getImports() {
 		StringBuilder stringBuilder = new StringBuilder();
-		for (String widgetName : imports) {
+		for (Type widgetName : imports) {
 			String importLine = "import " + typesAdapter.getTypeFullName(widgetName) + ";\n";
 			stringBuilder.append(importLine);
 		}
@@ -68,11 +65,11 @@ public class ActivityObject implements ActivityGeneratorInterface {
 			throw new IllegalArgumentException("Type: " + typeName + " is not defined.");
 		}
 		widgetsTypes.put(widgetResource, type);
-		imports.add(typeName);
+		imports.add(type);
 		if (type.getRequire() != null) {
 			for (Listener listener : type.getRequire().getListener()) {
-				interfaces.add(listener.getType());
-				imports.add(listener.getType());
+				interfaces.add(typesAdapter.getType(listener.getType()));
+				imports.add(typesAdapter.getType(listener.getType()));
 				// adding method parameters to import
 //				Type listenerType = typesAdapter.getType(listener.getType());
 //				if(listenerType.getImplements() != null){
@@ -88,14 +85,14 @@ public class ActivityObject implements ActivityGeneratorInterface {
 	public String getHeader() {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(String.format("public class %s extends Activity ", activityResource.getVariableName()));
-		String[] interfacesArray = interfaces.toArray(new String[0]);
+		Type[] interfacesArray = interfaces.toArray(new Type[0]);
 		for (int i = 0; i < interfacesArray.length; i++) {
 			if (i == 0) {
 				stringBuilder.append("implements ");
 			} else {
 				stringBuilder.append(", ");
 			}
-			stringBuilder.append(interfacesArray[i]);
+			stringBuilder.append(interfacesArray[i].getName());
 		}
 		stringBuilder.append("{\n");
 		return stringBuilder.toString();
@@ -185,16 +182,16 @@ public class ActivityObject implements ActivityGeneratorInterface {
 
 	
 	public String getMethods() {
-		Map<Method,String> interfacesMethods = new HashMap<Method,String>();
-		for (String typeName : interfaces) {
+		Map<Method,Type> interfacesMethods = new HashMap<Method,Type>();
+		for (Type typeName : interfaces) {
 			List<Method> typeMethods = typesAdapter.getTypeMethods(typeName);
 			for (Method method : typeMethods) {
 				interfacesMethods.put(method, typeName);
 			}
 		}
 		StringBuilder stringBuilder = new StringBuilder();
-		for (Entry<Method, String> entry : interfacesMethods.entrySet()) {
-			stringBuilder.append(getMethod(entry.getKey(),entry.getValue()));
+		for (Entry<Method, Type> entry : interfacesMethods.entrySet()) {
+			stringBuilder.append(getMethod(entry.getKey(),entry.getValue().getName()));
 			stringBuilder.append("\n");
 		}
 		return stringBuilder.toString();

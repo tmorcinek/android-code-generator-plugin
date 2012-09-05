@@ -38,38 +38,45 @@ public class TypesAdapterTest {
 	@Test
 	public void test() {
 		Type type = typesAdapter.getType("Button");
+		assertEquals("Button", type.getName());
 		assertEquals("android.widget", type.getPackage());
 	}
 
 	@Test
 	public void test2() {
 		Type type = typesAdapter.getType("AceButton");
+		assertEquals("AceButton", type.getName());
 		assertEquals("android.widget", type.getPackage());
 	}
 
 	@Test
 	public void test3() {
 		Type type = typesAdapter.getType("android.widget.AceButton");
+		assertEquals("AceButton", type.getName());
 		assertEquals("android.widget", type.getPackage());
 	}
 
 	@Test
 	public void test4() {
 		Type type = typesAdapter.getType("com.morcinek.android.widget.v4.AceButton");
+		assertEquals("AceButton", type.getName());
 		assertEquals("com.morcinek.android.widget.v4", type.getPackage());
 	}
 
 	@Test
 	public void test5() {
 		Type type = typesAdapter.getType("aceButton");
+		assertEquals("aceButton", type.getName());
 		assertEquals("android.widget", type.getPackage());
 	}
 
 	@Test
 	public void testComplicated() {
 		Type type = typesAdapter.getType("com.morcinek.widget.Button");
+		assertEquals("Button", type.getName());
 		assertEquals("com.morcinek.widget", type.getPackage());
 		type = typesAdapter.getType("Button");
+		assertEquals("Button", type.getName());
 		assertEquals("android.widget", type.getPackage());
 	}
 
@@ -87,9 +94,23 @@ public class TypesAdapterTest {
 		TypesAdapter typesAdapter = new TypesAdapter(types);
 		typesAdapter.setAutoTypeRecognition(true);
 		Type type = typesAdapter.getType("Button");
+		assertEquals("Button", type.getName());
 		assertEquals("morcinek.widget", type.getPackage());
 		type = typesAdapter.getType("com.morcinek.widget.Button");
+		assertEquals("Button", type.getName());
 		assertEquals("com.morcinek.widget", type.getPackage());
+	}
+	
+	@Test
+	public void testConverter() {
+		Type type = new Type();
+		typesAdapter.convertType(type, "com.morcinek.Button");
+		assertEquals("Button", type.getName());
+		assertEquals("com.morcinek", type.getPackage());
+		typesAdapter.convertType(type, "android.support.v4.view.ViewPager");
+		assertEquals("ViewPager", type.getName());
+		assertEquals("android.support.v4.view", type.getPackage());
+		
 	}
 
 }
